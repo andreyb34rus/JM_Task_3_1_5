@@ -1,11 +1,7 @@
 package com.andreyb34rus.entities;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 
-@Component
 public class User implements Serializable {
 
     private Long id;

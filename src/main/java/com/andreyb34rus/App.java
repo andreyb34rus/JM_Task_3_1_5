@@ -1,9 +1,12 @@
 package com.andreyb34rus;
 
 import com.andreyb34rus.entities.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class App {
@@ -11,7 +14,7 @@ public class App {
     private final static String URL = "http://91.241.64.178:7081/api/users";
     private final static String URL1 = "http://91.241.64.178:7081/api/users/3";
     private static final User USER = new User(3L, "James", "Brown", (byte) 33);
-    private static final StringBuilder SECRETCODE = new StringBuilder();
+    private static final StringBuilder SECRET_CODE = new StringBuilder();
 
     public static void main(String[] args) {
 
@@ -29,21 +32,21 @@ public class App {
             headers.add(HttpHeaders.COOKIE, jsessionid);
             HttpEntity<String> entity = new HttpEntity<>(mapper.writeValueAsString(USER), headers);
             response = restTemplate.exchange(URL, HttpMethod.POST, entity, String.class);
-            SECRETCODE.append(response.getBody());
+            SECRET_CODE.append(response.getBody());
 
             // getting 2nd part of code
             USER.setName("Thomas");
             USER.setLastName("Shelby");
             entity = new HttpEntity<>(mapper.writeValueAsString(USER), headers);
             response = restTemplate.exchange(URL, HttpMethod.PUT, entity, String.class);
-            SECRETCODE.append(response.getBody());
+            SECRET_CODE.append(response.getBody());
 
             // getting 3td part of code
             entity = new HttpEntity<>(headers);
             response = restTemplate.exchange(URL1, HttpMethod.DELETE, entity, String.class);
-            SECRETCODE.append(response.getBody());
+            SECRET_CODE.append(response.getBody());
 
-            System.out.println("Code: " + SECRETCODE);
+            System.out.println("Code: " + SECRET_CODE);
         } catch (Exception e) {
             e.printStackTrace();
         }
